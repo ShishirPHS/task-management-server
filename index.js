@@ -28,6 +28,14 @@ async function run() {
 
     const taskCollection = client.db("taskManagementDB").collection("tasks");
 
+    // get particular user's task
+    app.get("/api/user/task/get/:email", async (req, res) => {
+      const email = req.params.email;
+      const query = { user: email };
+      const result = await taskCollection.find(query).toArray();
+      res.send(result);
+    });
+
     // create task
     app.post("/api/user/task/create", async (req, res) => {
       const task = req.body;

@@ -43,6 +43,22 @@ async function run() {
       res.send(result);
     });
 
+    // change task status
+    app.patch("/api/user/task/update/status/:id", async (req, res) => {
+      const id = req.params.id;
+      const task = req.body;
+      const query = { _id: new ObjectId(id) };
+      const options = { upsert: true };
+      const updateDoc = {
+        $set: {
+          status: task.status,
+        },
+      };
+      const result = await taskCollection.updateOne(query, updateDoc, options);
+      console.log(result);
+      res.send(result);
+    });
+
     // delete task
     app.delete("/api/user/task/delete/:id", async (req, res) => {
       const id = req.params.id;
